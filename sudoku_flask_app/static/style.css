@@ -1,0 +1,47 @@
+body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+h1 {
+    margin-bottom: 20px;
+}
+
+.tablero {
+    display: flex;
+    flex-direction: column;
+    gap: 2px; /* Espacio entre filas */
+}
+
+.fila {
+    display: flex;
+    gap: 2px; /* Espacio entre celdas */
+}
+
+.celda {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 18px;
+    border: 1px solid #999;
+}
+
+.celda:nth-child(3n+1) {
+    border-left: 2px solid black;
+}
+
+.celda:nth-child(3n) {
+    border-right: 2px solid black;
+}
+
+.fila:nth-child(3n+1) .celda {
+    border-top: 2px solid black;
+}
+
+.fila:nth-child(3n) .celda {
+    border-bottom: 2px solid black;
+}

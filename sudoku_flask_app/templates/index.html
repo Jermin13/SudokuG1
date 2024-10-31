@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Puzzle de Sudoku</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <h1>Puzzle de Sudoku</h1>
+
+    <div class="botones">
+        <button onclick="window.location.href='/nuevo'">Generar Nuevo Sudoku</button>
+        <button onclick="resolverSudoku()">Resolver Sudoku</button>
+    </div>
+    <br>
+    <br>
+    <div class="tablero">
+        {% for fila in puzzle %}
+            <div class="fila">
+                {% for celda in fila %}
+                    <div class="celda">{{ celda if celda != 0 else "" }}</div>
+                {% endfor %}
+            </div>
+        {% endfor %}
+    </div>
+
+    <p id="tiempo-resolucion"></p> <!-- Párrafo para mostrar el tiempo de resolución -->
+
+    <script>
+        function resolverSudoku() {
+            fetch("/resolver", { method: "POST" })
+            .then(response => response.json())
+            .then(data => {
+                if (data.solucion) {
+                    const tablero = document.querySelectorAll(".fila");
+                    data.solucion.forEach((fila, i) => {
+                        fila.forEach((num, j) => {
+                            tablero[i].children[j].innerText = num !== 0 ? num : "";
+                        });
+                    });
+                    // Cambia a más decimales en toFixed
+                    document.getElementById("tiempo-resolucion").innerText = 
+                        "Tiempo de resolución: " + data.tiempo_resolucion.toFixed(12) + " ms";
+                } else {
+                    alert("No se pudo resolver el Sudoku.");
+                }
+            })
+            .catch(error => {
+                console.error("Error al resolver el Sudoku:", error);
+                alert("Ocurrió un error al resolver el Sudoku.");
+            });
+        }
+    </script>
+    
+</body>
+</html>
